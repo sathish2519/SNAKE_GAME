@@ -5,6 +5,19 @@ from pygame.locals import *
 import time
 
 SIZE = 40  #VARIABLE SIZE of a block
+
+#APPLE CLASS
+class Apple():
+    def __init__(self,parent_screen):
+        self.image=pygame.image.load("resources/apple.jpg").convert()#convert is the method for loading image 
+        self.parent_screen=parent_screen#we are calling parent screen here to  get painted in game window
+        self.x=SIZE*3
+        self.y=SIZE*3
+    def draw(self):
+        self.parent_screen.blit(self.image,(self.x,self.y))
+        pygame.display.flip()
+
+
 class Snake:
     def __init__(self,parent_screen,length):#here parent screen is a constructor
         
@@ -66,7 +79,9 @@ class Game:
         self.surface.fill((255,255,255))#were are making surface as class member
         self.snake=Snake(self.surface,2)
         self.snake.draw()
-#game class ends
+        self.apple=Apple(self.surface)
+        self.apple.draw()
+
     
 
     def run(self):
@@ -89,13 +104,17 @@ class Game:
                 elif event.type==QUIT:
                     running=False
             self.snake.walk()
-            time.sleep(0.4)
+            self.apple.draw()
+            time.sleep(0.3)
+
+#game class ends
 
 #main method
 
 if __name__=='__main__':
     game=Game() # creating object of the game
     game.run()
+    apple=Apple()
     
         
 
