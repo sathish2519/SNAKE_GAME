@@ -3,6 +3,7 @@ import pygame
 from sympy import true
 from pygame.locals import *
 import time
+import random
 
 SIZE = 40  #VARIABLE SIZE of a block
 
@@ -16,6 +17,11 @@ class Apple():
     def draw(self):
         self.parent_screen.blit(self.image,(self.x,self.y))
         pygame.display.flip()
+
+    def move(self):
+        self.x=random.randint(0,32)*SIZE
+        self.Y=random.randint(0,16)*SIZE
+
 
 
 class Snake:
@@ -82,6 +88,22 @@ class Game:
         self.apple=Apple(self.surface)
         self.apple.draw()
 
+
+    #collision Logic #5
+    def collision(self,x1,y1,x2,y2):
+        if y1>=y2 and y1<=y2+SIZE:
+            if x1>=x2 and x1<=x2+SIZE:
+                return True
+        return False
+
+
+    def play(self):
+        self.snake.walk()
+        self.apple.draw()
+#5
+        if self.collision(self.snake.x[0],self.snake.y[0],self.apple.x,self.apple.y): #checking whether the collision happens if happens we check whether the collision of apple and snake head we dont want to check body so x[0],y[0].
+            self.apple.move()#6 when collision occurs we move apple to random position ,this method will be called in apple class 
+
     
 
     def run(self):
@@ -103,8 +125,7 @@ class Game:
                         self.snake.moveright()
                 elif event.type==QUIT:
                     running=False
-            self.snake.walk()
-            self.apple.draw()
+            self.play()#method
             time.sleep(0.3)
 
 #game class ends
@@ -114,7 +135,6 @@ class Game:
 if __name__=='__main__':
     game=Game() # creating object of the game
     game.run()
-    apple=Apple()
     
         
 
